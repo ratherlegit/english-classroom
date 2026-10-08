@@ -78,7 +78,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SKILL_DIR = ROOT / "skills" / "english-classroom"
 SKILL_MD = SKILL_DIR / "SKILL.md"
 REFS = SKILL_DIR / "references"
-EM_DASH = "—"
+EM_DASH = "\u2014"
 
 
 def read(path):
