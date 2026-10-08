@@ -2,7 +2,7 @@
 
 Date: 2026-10-07
 Author: Zachary Rosen
-Status: Revised after edge-case review, awaiting final approval
+Status: Approved; amended after final whole-branch review (see Amendments)
 
 ## Purpose
 
@@ -142,7 +142,7 @@ Interview rules (in `SKILL.md`):
 - Class of one: if the number of students is 1, point to english-tutoring and offer to switch.
 - Duplicate class name: if the slug matches an existing record, say it already exists and offer three options: the same class (load it), a new term for the same class (keep the roster and vocab log, move the old path to Previous Paths, start a new path), or a different class (choose another name). Never overwrite a record.
 - Kids and teens: keep all content age-appropriate, honor exclusions, and follow the roster rules above.
-- Bimodal: two clusters of at least a quarter of the class each, two or more CEFR bands apart, with fewer students at the median band than in either cluster. Flag it and offer parallel tracks even when the total spread is only two bands.
+- Bimodal: two clusters of at least a quarter of the class each, two or more CEFR bands apart, with the bands between them holding fewer students than either cluster. Flag it and offer parallel tracks even when the total spread is only two bands.
 
 ### Step 2: Class learning path
 
@@ -184,7 +184,7 @@ Defined in `differentiation.md`:
 
 - **Anchor and tiers:** target the median. Support scaffolds (sentence frames, word banks, fewer items, a model answer). Core is the baseline task. Stretch extends (extra constraint, longer output, more abstract content, an error-correction twist).
 - **Grouping patterns:** mixed-level pairs for peer help, same-level trios or groups for stretch and support tasks, whole-class for warm-up and wrap-up, with a rotation suggestion.
-- **Wide or bimodal spread:** if the spread exceeds two CEFR bands (for example A2 to C1), or the class is bimodal (for example half at A2 and half at B2, where the median fits nobody), tell the teacher plainly and offer a parallel-tracks option for that lesson (two or three content bands) in place of tiers. Default stays tiers unless the teacher chooses otherwise.
+- **Wide or bimodal spread:** if the spread exceeds two CEFR bands (for example A2 to C1), or the class is bimodal (for example half at A2 and half at B2, where no single anchor level fits), tell the teacher plainly and offer a parallel-tracks option for that lesson (two or three content bands) in place of tiers. Default stays tiers unless the teacher chooses otherwise.
 - **Class size notes:** small (up to 6), medium (7 to 15), large (16 or more) adjust the number of groups, the monitoring approach, and which activities are practical.
 - **Age adaptations:** kids, teens, adults differ in tone, topic, activity types, and attention span.
 - Avoid more than one new grammar point per lesson or more than 8 to 10 vocab items. Exam-prep lessons tie each activity to the exam skill.
@@ -216,7 +216,7 @@ No automated test suite exists for skills. Verification is by exercise:
 4. Export one lesson and one handout to `.docx` and confirm the files exist and open.
 5. Confirm `english-tutoring` still works for one-on-one requests and its records are untouched.
 6. Routing check with ambiguous prompts ("plan a B1 speaking class", "lesson on conditionals for my 10 students", "next lesson for Maria"). Group phrasing must route to `english-classroom`, one-student phrasing to `english-tutoring`.
-7. Bimodal class (6 students at A2, 6 at B2): the skill reports median B1, flags the class as bimodal, and offers parallel tracks.
+7. Bimodal class (6 students at A2, 6 at B2): the skill flags the class as bimodal, says no single anchor level fits, and offers parallel tracks.
 8. Completed path: with every row delivered, a returning teacher is told the path is complete and offered a new path that keeps the roster and vocab log.
 9. Under-18 roster with two students who would both be "Maria G.": the skill extends the label, never asks for a full surname, birthdate, address, or photo, and writes no diagnoses or family details to the record.
 10. Estimated levels: Lesson 1 includes a Quick Level Check, and the skill asks for observations afterward and updates the record.
@@ -234,8 +234,25 @@ These are defaults chosen during spec writing. They are easy to change in review
 - Class size bands: small up to 6, medium 7 to 15, large 16 or more.
 - Records live in `~/eng-teaching-records/classes/` so they cannot collide with one-on-one student files.
 - Roster interests are spread across lessons so no one student is the recurring example.
-- Bimodal means two clusters of at least a quarter of the class each, two or more CEFR bands apart, with fewer students at the median band than in either cluster. It is a judgment aid, not a formula the skill must compute exactly.
+- Bimodal means two clusters of at least a quarter of the class each, two or more CEFR bands apart, with the bands between them holding fewer students than either cluster. It is a judgment aid, not a formula the skill must compute exactly.
 - Under-18 rosters use first name plus last initial, extended with more surname letters and then a number to resolve collisions (user decision).
 - Shared references are copied, not linked, so the two repos can drift over time. Accepted for independent installability.
 
 Implementation plan comes next, after spec approval.
+
+## Amendments after the final whole-branch review
+
+These refine the sections above and are binding where they differ.
+
+1. **Returning teachers:** the under-18 roster rule and the pronoun rule apply to every student added or edited in a Step 0 check-in, not only during the Step 1 interview. A changed headcount or level triggers recomputing the median and distribution.
+2. **Under-18 sensitive details:** if the teacher volunteers a diagnosis, family situation, or behavior detail, the skill describes the need rather than the diagnosis in any plan, and never puts it in a handout or exported file. If a surname is given anyway, only the letters the label needs are stored.
+3. **Parallel tracks:** a lesson with parallel tracks is the one exception to "one vocabulary list for the whole class": each track gets its own list pitched one level above that track's band, and every list goes into the Vocabulary Log. Grammar is then taught once per track at that track's band. The teacher's choice (tiers with an anchor band, or parallel tracks) is saved in a `Differentiation` line of the Profile and reused in later sessions.
+4. **Previous Paths:** when a record already has a Learning Path and a new path is approved (a completed path, or a new term), the old table moves unchanged under `## Previous Paths` as `### Completed <date>` (or `### Ended <date>` if it still had undelivered rows). The roster, profile, and Vocabulary Log are kept.
+5. **Quick Level Check:** applies to the first lesson written for the class while levels are estimated. Because the lesson is taught after the session ends, the skill asks for results in chat, never inside the plan or handout, and asks again at the next Step 0 check-in. Level confidence becomes confirmed once the teacher reports levels from what they saw.
+6. **Vocab Review** runs whenever the class Vocabulary Log has entries, and is skipped when it is empty.
+7. **Student handout** is offered by default regardless of the teacher's-notes setting.
+8. **Never overwrite a record:** before writing a new record file, the skill confirms the path does not exist. If it cannot list or read the folder, it asks the teacher whether the class already has a record.
+9. **Mixed classes:** every lesson includes at least one culture-sharing prompt or task.
+10. **Path rows track reality:** if a lesson's theme, grammar point, activities, or grouping ends up different from the approved path row, the row is updated and the teacher is told.
+11. **Exports** are never saved inside `~/eng-teaching-records/`. A `.docx` converter path relative to the repo root only works from the repo; in an installed plugin the script is run from the skill's own folder.
+12. **Publishing hygiene:** published files contain no absolute local paths and no real student names or data. History is squash-merged before publishing so earlier drafts of the test log never ship.
