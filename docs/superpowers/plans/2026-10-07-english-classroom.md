@@ -19,7 +19,8 @@
 - No em dash (U+2014) in narrative or body text in any file this plan creates, except heading separators. New content files in this plan use none at all. Vocab items use an en dash (`word – definition`).
 - No eyebrow labels (small uppercase labels above headings) in any copy.
 - Copied files: `cefr-levels.md`, `lesson-frameworks.md`, `activity-bank.md`, `teacher-activities.md`, `md_to_docx.py`, `LICENSE`. `md_to_docx.py` is copied byte-for-byte.
-- Wide-spread threshold: more than two CEFR bands. Class size bands: small up to 6, medium 7 to 15, large 16 or more.
+- Parallel tracks are offered when the level spread is wider than two CEFR bands OR the class is bimodal (two clusters of at least a quarter of the class each, two or more CEFR bands apart, with fewer students at the median band than in either cluster). The median comes from a per-level headcount; if it falls between two bands, use the lower of the two. Class size bands: small up to 6, medium 7 to 15, large 16 or more.
+- Under-18 classes: roster names are first name plus last initial (extend with more surname letters, then a number, to resolve collisions). Never ask for surnames, birthdates, addresses, or photos. Roster notes are limited to learning needs in plain terms, with no diagnoses, family situations, or behavior notes. Volunteered sensitive details are never written to the record. Adult classes are unchanged.
 - Fresh vocab: one CEFR level above the class median, same list for everyone, Support tier adds scaffolds never a shorter list.
 - Commits end with the trailer `Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>`.
 
@@ -28,10 +29,11 @@
 Inputs the spec implies but no happy-path task exercises. Each has a pinned phrase test in the task that owns the file.
 
 1. A class of one student (the teacher describes a single learner): skill must point to english-tutoring and offer to switch, not build a class plan. (Task 4, `SKILL.md`)
-2. A new class whose name slugs to an existing class record: skill must say the record already exists and ask whether it is the same class or needs a different name, never overwrite. (Task 4)
-3. Kids or teens class: topics and activities must be age-appropriate and exclusions are honored. (Tasks 2 and 4)
-4. Every student at the same level (no spread) or every level unknown: tiers still apply, based on task scaffolding, and the skill asks can-do questions instead of guessing. (Tasks 2 and 4)
+2. A new class whose name slugs to an existing class record: skill must say the record already exists and offer three options (same class, new term for the same class, or a different class), never overwrite. (Task 4)
+3. Kids or teens class: topics and activities must be age-appropriate, exclusions are honored, and the roster uses first name plus last initial (extended to resolve collisions) with no surnames, birthdates, addresses, photos, diagnoses, or family details. (Tasks 2 and 4)
+4. Levels that are uniform, unknown, estimated, or bimodal (for example half A2 and half B2, where the median fits nobody): tiers still apply, the skill asks can-do questions instead of guessing, a bimodal class is flagged with a parallel-tracks offer, and estimated levels trigger a Quick Level Check in Lesson 1. (Tasks 2 and 4)
 5. Environment with no shell or no connected folder: `.docx` export must fall back to pasteable markdown and never claim a file was created. (Task 4)
+6. A returning class whose path is fully delivered: skill must say the path is complete and offer a new path that keeps the roster and vocab log. (Task 4)
 
 ## File Structure
 
@@ -188,6 +190,10 @@ class TestNewReferences(unittest.TestCase):
             "L1 interference cheat sheet",
             "age-appropriate",
             "can do",
+            "headcount",
+            "first name",
+            "last initial",
+            "diagnoses",
         ]:
             self.assertIn(phrase, text, phrase)
 
@@ -206,6 +212,10 @@ class TestNewReferences(unittest.TestCase):
             "early finishers",
             "single level",
             "never a shorter",
+            "bimodal",
+            "headcount",
+            "lower of the two",
+            "Quick Level Check",
         ]:
             self.assertIn(phrase, text, phrase)
 
@@ -264,6 +274,13 @@ class TestSkillMd(unittest.TestCase):
             "parallel",
             "never a shorter",
             "exit task",
+            "bimodal",
+            "headcount",
+            "new term",
+            "path is complete",
+            "Quick Level Check",
+            "last initial",
+            "estimated",
         ]:
             self.assertIn(phrase, self.text, phrase)
 
@@ -275,6 +292,7 @@ class TestSkillMd(unittest.TestCase):
             "single level",
             "can do",
             "cannot generate a Word file",
+            "diagnoses",
         ]:
             self.assertIn(phrase, self.text, phrase)
 
@@ -406,7 +424,7 @@ This table lists the information needed, asked as separate questions in **detail
 | **Setting** | School, adult evening class, corporate, online, or in person. Decides which activities are practical (movement, whiteboards, breakout rooms) and the register of topics. |
 | **Number of students** | Sets the grouping plan and monitoring approach (see `differentiation.md`, Class size). If the answer is 1, this is not a class: point to english-tutoring. |
 | **Age group and range** | Kids, teens, or adults. Drives tone, topics, activity types, attention span, and what is age-appropriate. |
-| **Levels** | The lowest and highest CEFR level and the median. If the teacher is unsure, ask what students can do (for example "can most of them hold a short conversation about their day? write an email?") and infer a level from `cefr-levels.md` instead of asking them to self-rate against labels they may not know. If every student is at a single level, record that. |
+| **Levels** | Ask for a headcount: how many students are at each CEFR level (for example A2: 6, B2: 6). The total should match the number of students, or be marked approximate. Compute the median from the headcount (the lower of the two bands if it falls between) and note the distribution: single level, spread, or bimodal (see `differentiation.md`). If the teacher is unsure, ask what students can do (for example "can most of them hold a short conversation about their day? write an email?") and infer levels from `cefr-levels.md` instead of asking them to self-rate against labels they may not know. Mark guessed levels as estimated. |
 | **Backgrounds** | Countries and first languages. Decides mono-lingual vs mixed handling (below). Ask for places, not language families. |
 | **Shared interests and professions** | The main personalization lever for a class. Themes and examples come from what the group has in common. |
 | **Goal** | Exam prep, work, travel, immigration, general fluency. Steers topic register and skill priority for the whole class. |
@@ -424,7 +442,7 @@ Vocab constraint, vocab count, home assignment, teacher's notes, and handout are
 Ask these one at a time. Each answer can be a short paragraph covering several fields. Parse every answer into the same fields as detailed mode, and ask a one-off follow-up for anything missing instead of guessing.
 
 1. "What is the class called, where does it meet (school, evening class, company, online), and how many students are in it?"
-2. "How old are the students, and what are their levels? Give CEFR levels if you know them, or describe what they can and can't do."
+2. "How old are the students, and how many are at each level? Give CEFR levels if you know them, or describe what they can and can't do."
 3. "Where are the students from, what first languages do they speak, and what interests or jobs do they share?"
 4. "What is the class goal, and how long and how often do you meet? Is this a single lesson or a path (and how many lessons)? Any activity preferences or things to exclude, or say 'you choose' for defaults."
 
@@ -433,6 +451,8 @@ Then offer the roster as a final question.
 ## Roster
 
 The roster is optional and can be added at any time, including when a returning teacher says "add two new students". Each entry has: name, pronouns, level, first language, notes. Pronouns are asked, never inferred from a name; use they/them until told.
+
+**Under-18 classes (kids and teens):** the name is the first name plus the last initial ("Maria G."). Ask for the last initial only, never a full surname, and never ask for birthdates, addresses, or photos. If two students would share a label, extend the initial with more letters of the surname ("Maria Ga." and "Maria Gr."), and if that still collides, add a number ("Maria G. 2"). Notes are limited to learning needs in plain terms ("needs extra time", "needs larger print"). Never write diagnoses, family situations, or behavior notes to the record. If the teacher volunteers them, use them in the session only where they help. A class with any under-18 student follows this rule for the whole roster. Adult classes use whatever names the teacher gives.
 
 When a roster exists, use it to name students in grouping suggestions and to spread personal interests across lessons so no one student is the recurring example. When no roster exists, plans use generic tiers and shared interests only.
 
@@ -473,7 +493,7 @@ One lesson has to work for every student in it. The default approach is an ancho
 
 ## Anchor level and tiers
 
-Target the class median CEFR level for grammar, vocab, and the Core task. Every activity then has three versions of the same task:
+Target the class median CEFR level for grammar, vocab, and the Core task. The median comes from the level headcount (the lower of the two bands if it falls between). Every activity then has three versions of the same task:
 
 - **Support**: the Core task with scaffolds. Sentence frames, a word bank, fewer items, a model answer, or a partly completed example. The goal is the same as Core, with a bridge to reach it.
 - **Core**: the baseline task, pitched at the median.
@@ -483,7 +503,7 @@ Rules:
 - Same task, three entry points. Nobody sits out and the class stays together for the debrief.
 - Fresh vocabulary is one list for everyone, pitched one level above the median. The Support tier adds scaffolds for the same words (sentence frames, example hints, a word bank), never a shorter or easier list, so the whole class learns the same vocabulary.
 - Grammar is taught once at the median. The Support tier gets a short review box of the prerequisite structure. The Stretch tier gets a short extension (a further use or a contrast).
-- If the class is at a single level, tiers still apply. Differentiate by scaffolding and extension, not by assuming the level is uniform in practice. If levels are unknown, ask what students can do instead of guessing.
+- If the class is at a single level, tiers still apply. Differentiate by scaffolding and extension, not by assuming the level is uniform in practice. If levels are unknown, ask what students can do instead of guessing. If levels are only estimated, Lesson 1 opens with a Quick Level Check (a short diagnostic), and the class record is updated afterward.
 
 ## Grouping patterns
 
@@ -496,6 +516,8 @@ Rules:
 ## Wide level spread
 
 If the spread is wider than two CEFR bands (for example A2 to C1), say so plainly and offer parallel tracks for that lesson: two or three content bands with their own vocabulary and grammar focus, sharing one theme so the class can reconvene for a joint wrap-up. Tiers remain the default unless the teacher chooses parallel tracks. Parallel tracks cost the teacher more management, so recommend them only when tiers would stretch too far.
+
+**Bimodal classes.** A class is bimodal when two clusters of at least a quarter of the class each, two or more CEFR bands apart, with fewer students at the median band than in either cluster (for example 6 students at A2 and 6 at B2, where the median is B1 and fits nobody). Treat a bimodal class like a wide spread: say so plainly and offer parallel tracks, even when the total spread is only two bands. This is a judgment aid, not an exact formula.
 
 ## Class size
 
@@ -645,6 +667,7 @@ Records live outside the skill folder on purpose: the profile, roster, path, and
 
 - **If a record exists**: skip Step 1 entirely. Load the profile, roster, path, and vocab log. Ask a brief check-in only: did students join or leave, did any levels change, anything else to adjust. Update the roster and profile with any changes. A roster change never resets the path or the vocab log.
   - **If there is an active path**: remind the teacher what is next (the next "Not yet delivered" row: lesson name, theme, grammar point, grouping) and confirm it is still wanted before generating. Let them ask for something different (another theme or activity, skip ahead).
+  - **If every row is delivered**: say the path is complete and offer a new path (the finished path moves to a Previous Paths section in the record, and the roster and vocab log carry over so words are not repeated) or single lessons.
   - **If there is no path**: offer to design one, clearly optional. If they decline, build a single lesson.
   - Then go to Step 3 and Step 4 (or Step 2 first if a new path was just approved).
 - **If no record exists**: run the full Step 1 interview, then create the record.
@@ -662,7 +685,7 @@ Ask these as **separate questions**, in this order:
 2. **Setting**: school, adult evening class, corporate, online, or in person.
 3. **Number of students.**
 4. **Age group and range**: kids, teens, or adults.
-5. **Levels**: lowest CEFR, highest CEFR, and the median. If unsure, ask what students can do and infer a level from `references/cefr-levels.md`.
+5. **Levels**: a headcount of how many students are at each CEFR level (for example A2: 6, B2: 6). Compute the median (the lower of the two bands if it falls between) and the distribution: single level, spread, or bimodal. If the teacher is unsure, ask what students can do, infer levels from `references/cefr-levels.md`, and mark the levels as estimated.
 6. **Backgrounds**: countries and first languages. Determine whether the class is mono-lingual or mixed.
 7. **Shared interests and professions.**
 8. **Goal for learning English.**
@@ -680,9 +703,10 @@ Four open-ended prompts, one at a time (the exact wording is in `references/clas
 ### Interview rules
 
 - **A class of one**: if the number of students is 1, say that this is a one-on-one case, that english-tutoring fits better, and offer to switch. Continue here only if the teacher insists.
-- **A class name that already exists**: if the slug of a new class name matches an existing record, say the record already exists and ask whether this is the same class (load it, Step 0) or a different class that needs another name. Never overwrite a record.
+- **A class name that already exists**: if the slug of a new class name matches an existing record, say the record already exists and offer three options: the same class (load it, Step 0), a new term for the same class (keep the roster and vocab log, move the old path to Previous Paths, and design a new path), or a different class that needs another name. Never overwrite a record.
 - **Kids and teens**: keep every topic and activity age-appropriate, and honor every exclusion the teacher gives.
-- **Unknown or uniform levels**: if the teacher cannot give levels, ask what students can do and infer a level. If every student is at a single level, record that. Support, Core, and Stretch tiers still apply (see Step 5).
+- **Under-18 rosters**: the Name column is the first name plus the last initial ("Maria G."). Ask for the last initial only, never a full surname, and never ask for birthdates, addresses, or photos. If two students would share a label, extend the initial with more letters of the surname ("Maria Ga." and "Maria Gr."), and if that still collides, add a number ("Maria G. 2"). Notes are limited to learning needs in plain terms ("needs extra time", "needs larger print"). Never write diagnoses, family situations, or behavior notes to the record. If the teacher volunteers them, use them in the session only where they help. A class with any under-18 student follows this rule for the whole roster. Adult classes use whatever names the teacher gives.
+- **Unknown, uniform, or bimodal levels**: if the teacher cannot give levels, ask what students can do, infer levels, and mark them estimated. If every student is at a single level, record that and note that Support, Core, and Stretch tiers still apply (see Step 5). If the class is bimodal (two clusters of at least a quarter of the class each, two or more CEFR bands apart, with fewer students at the median band than in either cluster, for example half A2 and half B2), say that the median fits nobody and offer parallel tracks (Step 2).
 - **Mono-lingual vs mixed**: infer the shared first language from the location for a mono-lingual class and use the L1 interference notes in `references/class-interview.md` silently. For a mixed class, keep activities English-only and culture-sharing, with no translation-dependent vocab.
 - **Pronouns for roster students** are asked, never inferred from a name.
 - Do not ask about vocab preferences or home assignments in this round. Those are asked right before a lesson is written (Step 4).
@@ -698,7 +722,10 @@ At the end of Step 1, create `~/eng-teaching-records/classes/<class-slug>.md`:
 - Setting: ...
 - Number of students: ...
 - Age group: ...
-- Level spread: lowest ..., highest ..., median ...
+- Level headcount: A2: 6, B2: 6
+- Median level: ... (lower of the two if between bands)
+- Distribution: single level / spread / bimodal
+- Level confidence: confirmed / estimated
 - Backgrounds: ... (mono-lingual / mixed)
 - Shared interests: ...
 - Goal: ...
@@ -721,6 +748,10 @@ At the end of Step 1, create `~/eng-teaching-records/classes/<class-slug>.md`:
 |---|---|---|---|---|---|---|
 | 1 | ... | ... | ... | ... | Mixed-level pairs | Delivered 2026-10-07 |
 | 2 | ... | ... | ... | ... | Same-level trios | Not yet delivered |
+
+## Previous Paths (omit if none)
+### Completed 2026-12-15
+(the old path table)
 
 ## Vocabulary Log
 ### 2026-10-07, Lesson 1: <name>
@@ -748,7 +779,7 @@ Rules:
 - **Themes** come from what the class shares: common interests, the age group, the setting, and the goal. If a roster records individual interests, spread them across lessons so no one student is the recurring example.
 - **Grouping** column: state the grouping pattern for the lesson (mixed-level pairs, same-level trios, whole class). Patterns are in `references/differentiation.md`.
 - **Weight toward the key skills** and **respect exclusions**.
-- **Wide spread**: if the spread is wider than two CEFR bands (for example A2 to C1), tell the teacher plainly and offer parallel tracks for the lessons where tiers would stretch too far. Tiers remain the default unless the teacher chooses parallel tracks. See `references/differentiation.md`.
+- **Wide or bimodal spread**: if the spread is wider than two CEFR bands (for example A2 to C1), or the class is bimodal (for example half at A2 and half at B2, so the median fits nobody), tell the teacher plainly and offer parallel tracks for the lessons where tiers would stretch too far. Tiers remain the default unless the teacher chooses parallel tracks. See `references/differentiation.md`.
 
 **Do not generate any lesson immediately after presenting the path.** Ask whether they want adjustments or want Lesson 1 generated. Only then proceed to Steps 3 and 4 for Lesson 1. Never generate all lessons at once, and ask before each later lesson, using that row's theme, grammar point, activities, and grouping as the spec.
 
@@ -778,16 +809,17 @@ Ask these once. For a path, ask before Lesson 1 and reuse the answers unless the
 Unless the teacher specifies their own format, include in this order:
 1. **Objective(s)**: a can-do statement ("Students will be able to...").
 2. **Warm Up Conversation**
-3. **Vocab Review** (from Lesson 2 onward, or any returning class)
-4. **Fresh Vocabulary**
-5. **Grammar Focus**
-6. **Activities** (2 to 3, each with a suggested grouping and three versions)
-7. **Wrap-up**
-8. **Home Assignment** (unless the teacher opted out)
-9. **Materials needed**
-10. **Time Summary**
-11. **Teacher's Notes** (if not turned off)
-12. **Student Handout** (a second, notes-free copy, unless the teacher opted out)
+3. **Quick Level Check** (Lesson 1 only, when levels are estimated)
+4. **Vocab Review** (from Lesson 2 onward, or any returning class)
+5. **Fresh Vocabulary**
+6. **Grammar Focus**
+7. **Activities** (2 to 3, each with a suggested grouping and three versions)
+8. **Wrap-up**
+9. **Home Assignment** (unless the teacher opted out)
+10. **Materials needed**
+11. **Time Summary**
+12. **Teacher's Notes** (if not turned off)
+13. **Student Handout** (a second, notes-free copy, unless the teacher opted out)
 
 ### Time Summary
 
@@ -796,6 +828,10 @@ Timings are suggestions the teacher can flex. Do not put a time next to each hea
 ### Warm Up Conversation
 
 Placed right after the Objective. A short, genuine check-in the whole class can answer in pairs or groups: 2 to 3 open-ended questions about their lives, in the spirit of "Any highlights from your week?" or "What are you looking forward to this weekend?". Write fresh questions for every lesson and vary the angle. Format as a bulleted list, and carry that format into the Student Handout. These are not lesson-topic teasers and not one-to-one rapport questions: every student must be able to answer regardless of level.
+
+### Quick Level Check
+
+Lesson 1 only, and only when the record says levels are estimated. Place it right after the Warm Up Conversation. A short diagnostic of about 5 minutes, done in pairs: 3 to 4 can-do prompts at ascending difficulty (for example "Describe your morning.", "Explain a problem at work or school and what you did about it.", "Give your opinion on a topic and defend it.") and one written line the teacher can collect. Add a Teacher's Note on what to observe (who stalls at which prompt, which structures break down). After delivering Lesson 1, ask the teacher what they observed and update the headcount, median, distribution, and level confidence in the record.
 
 ### Vocab Review (recycling)
 
@@ -871,6 +907,7 @@ If the teacher opted in, produce a second copy after the main plan. It is the sa
 
 After finalizing a lesson:
 - Set its path row Status to "Delivered <date>".
+- After Lesson 1 with estimated levels, update the level headcount, median, distribution, and confidence from the teacher's observations.
 - **Before** drafting Fresh Vocabulary, read the Vocabulary Log. **After** finalizing the list, append the new items under a new dated heading.
 - If the teacher says the class already knows certain words, log those too.
 
@@ -879,8 +916,8 @@ After finalizing a lesson:
 The full rules are in `references/differentiation.md`. In short:
 - **Anchor and tiers**: target the median. Every activity has Support, Core, and Stretch versions of the same task. Fresh vocab is one list for everyone, never a shorter list.
 - **Grouping**: mixed-level pairs for peer help, same-level trios for Support and Stretch tasks, whole class for warm-up and wrap-up. Rotate partners and who goes first.
-- **Wide spread**: more than two CEFR bands triggers an offer of parallel tracks. Tiers stay the default.
-- **Single level**: if all students are at a single level, tiers still apply as scaffolding and extension.
+- **Wide or bimodal spread**: more than two CEFR bands, or a bimodal class, triggers an offer of parallel tracks. Tiers stay the default.
+- **Single level**: if all students are at a single level, tiers still apply as scaffolding and extension. If levels are only estimated, Lesson 1 starts with a Quick Level Check.
 - **Class size**: small (up to 6), medium (7 to 15), large (16 or more) change the number of groups, the monitoring approach, and which activities are practical.
 - **Age**: kids, teens, and adults differ in tone, topics, activity length, and what is age-appropriate.
 - **Pitfalls**: no more than one new grammar point per lesson or about 8 to 10 new vocab items. For exam prep, tie every activity to the exam skill being tested.
@@ -987,7 +1024,7 @@ It works inside Claude (Claude.ai, the Claude apps, or Claude Code), ChatGPT, an
 
 ## Wide level spreads
 
-If your class spans more than two CEFR bands (for example A2 to C1), it tells you plainly and offers parallel tracks for the lessons where tiers would stretch too far.
+If your class spans more than two CEFR bands (for example A2 to C1), or splits into two clusters (half at A2 and half at B2, where an average level would fit nobody), it tells you plainly and offers parallel tracks for the lessons where tiers would stretch too far. Not sure of your students' levels? It starts Lesson 1 with a short level check and updates the class record afterward.
 
 ## Setting it up
 
@@ -1082,7 +1119,7 @@ git commit -m "Add README and AGENTS.md" -m "Co-Authored-By: Claude Sonnet 5.5 <
 Run: `claude plugin validate ~/english-classroom`
 Expected: validation passes. If the subcommand is not available in this Claude Code version, run `claude plugin --help`, record in the log that `validate` is unavailable, and continue.
 
-- [ ] **Step 2: Exercise three sample classes**
+- [ ] **Step 2: Exercise five sample classes**
 
 Start a fresh session with the plugin loaded: `claude --plugin-dir ~/english-classroom` (or non-interactively `claude -p "<prompt>" --plugin-dir ~/english-classroom`). If the flag is not recognised, use the local-plugin option shown by `claude --help`. In that session, give these answers and record pass or fail for each check in `tests/manual-test-log.md`. Use class names beginning with `test-` so the records are easy to find and delete.
 
@@ -1091,6 +1128,8 @@ Start a fresh session with the plugin loaded: `claude --plugin-dir ~/english-cla
 | `test-teens-b1` | 8 students, ages 13 to 15, B1 median (B1 to B1), all from Barcelona (Spanish/Catalan), interests football and music, 60 min weekly, path of 3 lessons, no exclusions | Record created under `classes/`. Path table has a Grouping column. Mono-lingual L1 notes appear in teacher's notes. Content is age-appropriate. |
 | `test-adults-mixed` | 14 students, adults, A2 to B2, mixed countries (Brazil, Japan, Poland, Egypt), work-related interests, 90 min, single lesson | Mixed-class handling: English-only, culture-sharing, no translation. Vocab one level above median. Every activity has Support, Core, Stretch and a grouping. |
 | `test-wide-spread` | 10 students, adults, A2 to C1, mixed, 60 min, path of 2 lessons | The skill states the spread is wider than two CEFR bands and offers parallel tracks. |
+| `test-bimodal` | 12 students, adults, 6 at A2 and 6 at B2, mixed, 60 min, single lesson | Skill reports median B1, flags the class as bimodal, and offers parallel tracks although the spread is only two bands. |
+| `test-estimated` | 9 students, adults, teacher says "no idea, maybe A2 to B1", mono-lingual, single lesson | Skill asks can-do questions, marks levels estimated, Lesson 1 has a Quick Level Check, and afterward the skill asks for observations and updates the record. |
 
 Then, in the `test-teens-b1` session, request Lesson 1 and Lesson 2 and check:
 - Lesson 2 has a Vocab Review drawn from Lesson 1's log
@@ -1103,10 +1142,13 @@ Then, in the `test-teens-b1` session, request Lesson 1 and Lesson 2 and check:
 
 In fresh sessions, record pass or fail:
 1. Describe "one student, Maria, B1" as a class of 1: the skill must point to english-tutoring and offer to switch.
-2. Create a class named `Test Teens B1` again: the skill must say the record already exists and ask whether it is the same class.
+2. Create a class named `Test Teens B1` again: the skill must say the record already exists and offer three options (same class, new term for the same class, different class). Choose "new term" and confirm the roster and vocab log carry over and the old path moves to Previous Paths.
 3. Request a kids class (ages 7 to 9) with exclusions "no scary topics": content must be age-appropriate and honor the exclusion.
 4. A class where the teacher says "I don't know their levels": the skill must ask what students can do.
 5. Ask for a `.docx` in an environment without code execution (a session started with tools disabled, or state the assumption): the skill must say it cannot generate a Word file and give pasteable markdown.
+6. In a `test-` record, mark every path row Delivered, then ask for the next lesson: the skill must say the path is complete and offer a new path, keeping the roster and vocab log.
+7. Kids class roster with two students named Maria whose surnames start with G: labels must be extended ("Maria Ga." and "Maria Gr." or a number), and the skill must not ask for a full surname, birthdate, address, or photo.
+8. In the same session say "Maria G. has dyslexia and her parents are divorcing": the record file must contain neither detail (open the file and check), and any note is limited to a plain learning need such as "needs extra time".
 
 - [ ] **Step 4: Export check**
 
