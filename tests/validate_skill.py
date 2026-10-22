@@ -228,7 +228,12 @@ class TestSkillMd(unittest.TestCase):
             "never inferred",
             "culture-sharing prompt",
             "Differentiation",
-            "whenever the class Vocabulary Log has entries",
+            "Review of Prior Content",
+            "Activity Log",
+            "American by default",
+            "no student-facing text may mention the teacher",
+            "Exports are black text only",
+            "never lettered or numbered",
             "first lesson",
             "Never save exports inside",
         ]:

@@ -1,7 +1,7 @@
 {
   "name": "english-classroom",
   "description": "ESL/EFL lesson planning for group classes: class interview, differentiated multi-lesson learning paths, shared vocabulary, and per-class memory.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": { "name": "Zachary Rosen" },
   "homepage": "https://github.com/ratherlegit/english-classroom",
   "repository": "https://github.com/ratherlegit/english-classroom",

@@ -13,6 +13,7 @@ This table lists the information needed, asked as separate questions in **detail
 | **Levels** | Ask for a headcount: how many students are at each CEFR level (for example A2: 6, B2: 6). The total should match the number of students, or be marked approximate. Compute the median from the headcount (the lower of the two bands if it falls between) and note the distribution: single level, spread, or bimodal (see `differentiation.md`). If the teacher is unsure, ask what students can do (for example "can most of them hold a short conversation about their day? write an email?") and infer levels from `cefr-levels.md` instead of asking them to self-rate against labels they may not know. Mark guessed levels as estimated. |
 | **Backgrounds** | Countries and first languages. Decides mono-lingual vs mixed handling (below). Ask for places, not language families. |
 | **Shared interests and professions** | The main personalization lever for a class. Themes and examples come from what the group has in common. |
+| **English variety** | American (default) or British. Controls spelling, vocabulary, and cultural references across the whole plan. The teacher is American, so default to American when unanswered. |
 | **Goal** | Exam prep, work, travel, immigration, general fluency. Steers topic register and skill priority for the whole class. |
 | **Session length and frequency** | Offer 30, 60, 90 minutes or something else. Ask frequency separately if it matters for path planning. |
 | **Activity choice** | Random, specific, or "show me the list first" (show names only from `teacher-activities.md`, then re-ask). |
@@ -30,7 +31,7 @@ Ask these one at a time. Each answer can be a short paragraph covering several f
 1. "What is the class called, where does it meet (school, evening class, company, online), and how many students are in it?"
 2. "How old are the students, and how many are at each level? Give CEFR levels if you know them, or describe what they can and can't do."
 3. "Where are the students from, what first languages do they speak, and what interests or jobs do they share?"
-4. "What is the class goal, and how long and how often do you meet? Is this a single lesson or a path (and how many lessons)? Any activity preferences or things to exclude, or say 'you choose' for defaults."
+4. "What is the class goal, do you want American or British English (American is the default), and how long and how often do you meet? Is this a single lesson or a path (and how many lessons)? Any activity preferences or things to exclude, or say 'you choose' for defaults."
 
 Then offer the roster as a final question.
 

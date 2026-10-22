@@ -28,6 +28,18 @@ Prefer activities built from generated text (dialogues, stories, transcripts, ga
 ## Writing
 - Model text analysis (highlight structure/linking words before students write their own), collaborative writing (build a story sentence by sentence), peer editing with a checklist, timed exam-style writing under real conditions, sentence-combining exercises for lower levels
 
+## Home assignment ideas (writing and independent practice)
+Class time is for speaking, so writing lives here. Pick 1 to 2 per lesson, tied to the lesson's theme, vocab, and grammar. Keep each doable in 15 to 20 minutes, with a Support option (frame or word bank) for lower levels.
+- **Fix the email**: a generated email with tone, register, or grammar problems to rewrite and briefly explain
+- **Micro-story** (50 to 80 words) using 5 target words
+- **Review or complaint**: write a review of a real place, product, or experience
+- **Error hunt**: a generated paragraph with 6 to 8 planted errors (target grammar plus common L1 errors) to find and correct
+- **Diary or message**: a short entry, text message, or email to a friend using the target grammar
+- **Sentence-combining or transformation set** for lower levels
+- **Record yourself**: a 60-second voice note on a topic, to bring or send for feedback
+- **Describe your week or plan** using the target tense, 80 to 100 words
+- **Mini research and report**: three sentences about something connected to the theme
+
 ## Warm-ups usable for any lesson
 - Two truths and a lie, would-you-rather, quick survey (mingle and ask 3 classmates), word association chain, this-or-that voting
 

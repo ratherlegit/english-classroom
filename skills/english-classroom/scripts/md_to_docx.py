@@ -13,7 +13,8 @@ Supports:
     # / ## / ### headings         -> Title / Heading 1 / Heading 2
     **bold** and *italic* inline  -> bold/italic runs (including combined ***both***)
     - / * bullet list items       -> bulleted paragraphs
-    > blockquote lines            -> distinct "note" style (italic, indented, gray)
+    [label](url) links            -> plain label text (no blue underlined links)
+    > blockquote lines            -> distinct "note" style (italic, indented, black)
       used for Teacher's Notes so they read as clearly separate from
       student-facing content
     | a | b | markdown tables     -> a real Word table (bold header row, gridlines) —
@@ -175,12 +176,58 @@ def parse_table_row(line):
     return [c.strip() for c in cells]
 
 
+def force_black_text(doc):
+    """Make every text style black. Word's default template colors Title and
+    Heading styles blue (and draws a blue rule under the Title); exports must be
+    black text only. Works at the XML level so theme colors, table styles and
+    unused styles can't leak color back in."""
+    styles_el = doc.styles.element
+    for color in styles_el.iter(qn("w:color")):
+        for attr in list(color.attrib):
+            del color.attrib[attr]
+        color.set(qn("w:val"), "000000")
+    for border in list(styles_el.iter(qn("w:pBdr"))):
+        border.getparent().remove(border)
+    black = RGBColor(0, 0, 0)
+    for style in doc.styles:
+        font = getattr(style, "font", None)
+        if font is not None:
+            font.color.rgb = black
+
+
+LINK_PATTERN = re.compile(r"\[([^\]]+)\]\([^)]+\)")
+
+
+def strip_links(text):
+    """Turn [label](url) into plain label text so nothing renders as a blue link."""
+    return LINK_PATTERN.sub(r"\1", text)
+
+
+def verify_black(output_path):
+    """Fail loudly if the saved file contains any color other than black/auto,
+    or any hyperlink (which Word renders blue and underlined)."""
+    import zipfile
+
+    problems = []
+    with zipfile.ZipFile(output_path) as z:
+        for name in ("word/document.xml", "word/styles.xml"):
+            xml = z.read(name).decode("utf-8")
+            for val in set(re.findall(r'<w:color [^>]*w:val="([^"]+)"', xml)):
+                if val.lower() not in ("000000", "auto"):
+                    problems.append(f"{name}: color {val}")
+            if "<w:hyperlink" in xml:
+                problems.append(f"{name}: hyperlink")
+    if problems:
+        print("Non-black formatting found: " + "; ".join(problems), file=sys.stderr)
+        sys.exit(1)
+
+
 def convert(input_path, output_path):
     with open(input_path, "r", encoding="utf-8") as f:
-        lines = f.read().splitlines()
+        lines = strip_links(f.read()).splitlines()
 
     doc = Document()
-    note_color = RGBColor(0x55, 0x55, 0x55)  # gray, to visually separate notes
+    force_black_text(doc)
     current_list_num_id = None  # tracks the active numbered list, so a new list restarts at 1
 
     i = 0
@@ -235,7 +282,7 @@ def convert(input_path, output_path):
         elif stripped.startswith("> "):
             p = doc.add_paragraph()
             p.paragraph_format.left_indent = Inches(0.3)
-            add_inline_runs(p, stripped[2:].strip(), italic_default=True, color=note_color)
+            add_inline_runs(p, stripped[2:].strip(), italic_default=True)
         elif stripped.startswith("- ") or stripped.startswith("* "):
             p = doc.add_paragraph(style="List Bullet")
             add_inline_runs(p, stripped[2:].strip())
@@ -254,6 +301,7 @@ def convert(input_path, output_path):
         i += 1
 
     doc.save(output_path)
+    verify_black(output_path)
 
 
 if __name__ == "__main__":

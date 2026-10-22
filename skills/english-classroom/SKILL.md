@@ -17,7 +17,7 @@ Before interviewing anyone, check whether the teacher names a class you already 
 
 Records live outside the skill folder on purpose: the profile, roster, path, and vocab history are personal data that must survive skill updates and reinstalls.
 
-- **If a record exists**: skip Step 1 entirely. Load the profile, roster, path, and vocab log. Ask a brief check-in only: did students join or leave, did any levels change, anything else to adjust. Update the roster and profile with any changes, applying the Step 1 roster rules (Under-18 rosters, Pronouns) to every student added or edited. If the number of students or the levels changed, recompute the median and distribution. If Level confidence is estimated and a lesson with a Quick Level Check was written, ask what the teacher observed. A roster change never resets the path or the vocab log.
+- **If a record exists**: skip Step 1 entirely. Load the profile, roster, path, and vocab log. Ask a brief check-in only: did students join or leave, did any levels change, anything else to adjust. If the record has no English variety, treat it as American without asking. Update the roster and profile with any changes, applying the Step 1 roster rules (Under-18 rosters, Pronouns) to every student added or edited. If the number of students or the levels changed, recompute the median and distribution. If Level confidence is estimated and a lesson with a Quick Level Check was written, ask what the teacher observed. A roster change never resets the path or the vocab log.
   - **If there is an active path**: remind the teacher what is next (the next "Not yet delivered" row: lesson name, theme, grammar point, grouping) and confirm it is still wanted before generating. Let them ask for something different (another theme or activity, skip ahead).
   - **If every row is delivered**: say the path is complete and offer a new path (the finished path moves to a Previous Paths section in the record, and the roster and vocab log carry over so words are not repeated) or single lessons.
   - **If there is no path**: offer to design one, clearly optional. If they decline, build a single lesson.
@@ -41,12 +41,13 @@ Ask these as **separate questions**, in this order:
 6. **Backgrounds**: countries and first languages. Determine whether the class is mono-lingual or mixed.
 7. **Shared interests and professions.**
 8. **Goal for learning English.**
-9. **Session length and frequency**: offer 30, 60, 90 minutes, or something else.
-10. **Activity choice**: random, specific activities the teacher names, or show me the list first (names only from `references/teacher-activities.md`, then re-ask).
-11. **Single lesson or learning path.** If a path, ask how many lessons as the very next question. Never suggest or default to a number.
-12. **Key skills to focus on.**
-13. **Anything to include or exclude**: topics to avoid, a coursebook to align with, grammar already mastered or specifically requested.
-14. **Optional roster**: offer to add individual students now or later.
+9. **English variety**: American or British English. Offer **American (default)** first. It controls spelling, vocabulary, and cultural references. The teacher is American, so if they skip it, use American.
+10. **Session length and frequency**: offer 30, 60, 90 minutes, or something else.
+11. **Activity choice**: random, specific activities the teacher names, or show me the list first (names only from `references/teacher-activities.md`, then re-ask).
+12. **Single lesson or learning path.** If a path, ask how many lessons as the very next question. Never suggest or default to a number.
+13. **Key skills to focus on.**
+14. **Anything to include or exclude**: topics to avoid, a coursebook to align with, grammar already mastered or specifically requested.
+15. **Optional roster**: offer to add individual students now or later.
 
 ### Light mode
 
@@ -83,6 +84,7 @@ At the end of Step 1, create `~/eng-teaching-records/classes/<class-slug>.md`:
 - Goal: ...
 - Session length and frequency: ...
 - Activity choice: ...
+- English variety: American/British (default American)
 - Key skills weighting: ...
 - Differentiation: tiers (anchor: ...) / parallel tracks (bands, lessons)
 - Exclusions: ...
@@ -106,10 +108,15 @@ At the end of Step 1, create `~/eng-teaching-records/classes/<class-slug>.md`:
 ### Completed 2026-12-15
 (the old path table)
 
+## Activity Log
+- 2026-10-07: Role Play, This or That
+
 ## Vocabulary Log
 ### 2026-10-07, Lesson 1: <name>
 - word one
 - word two
+- Grammar: <point taught>
+- Home assignment: <what was set>
 ```
 
 The vocab, home assignment, teacher's notes, and handout fields stay blank until Step 4 asks about them.
@@ -160,10 +167,10 @@ Ask these once. For a path, ask before Lesson 1 and reuse the answers unless the
 **Do not open the plan with a class-details or framework header.** Start straight in with the lesson content.
 
 Unless the teacher specifies their own format, include in this order:
-1. **Objective(s)**: a can-do statement ("Students will be able to...").
+1. **Objective(s)**: a can-do statement written directly to the students in the second person ("You will be able to..."), never in the third person ("Students will...").
 2. **Warm Up Conversation**
 3. **Quick Level Check** (first lesson only, when levels are estimated)
-4. **Vocab Review** (whenever the class Vocabulary Log has entries)
+4. **Review of Prior Content** (every lesson that has anything to review)
 5. **Fresh Vocabulary**
 6. **Grammar Focus**
 7. **Activities** (2 to 3, each with a suggested grouping and three versions)
@@ -186,12 +193,18 @@ Placed right after the Objective. A short, genuine check-in the whole class can 
 
 Only in the first lesson written for this class while the record says levels are estimated. Place it right after the Warm Up Conversation. A short diagnostic of about 5 minutes, done in pairs: 3 to 4 can-do prompts at ascending difficulty (for example "Describe your morning.", "Explain a problem at work or school and what you did about it.", "Give your opinion on a topic and defend it.") and one written line the teacher can collect. Add a Teacher's Note on what to observe (who stalls at which prompt, which structures break down). The lesson is taught after this session, so ask for the results in chat, never inside the plan or handout: invite the teacher to report back, and ask again at the next Step 0 check-in. Then update the headcount, median, distribution, and level confidence (confirmed once the teacher reports levels from what they saw, still estimated if they are unsure). The Teacher's Note says what to observe and never addresses the assistant.
 
-### Vocab Review (recycling)
+### Review of Prior Content (recycling)
 
-Before new vocabulary, recycle old words:
-- Pull 2 to 4 items from the class Vocabulary Log. Prioritize items from lessons that are neither the most recent nor already reviewed several times, so review rotates through everything taught.
-- Use a quick format: a sentence with the word blanked out, or "use this word in a sentence about..." tied to the class's shared interests. Run it in pairs.
-- Skip this section when the Vocabulary Log is empty.
+**Every lesson includes this section whenever the class has any prior content on record** (vocabulary, grammar points, or a previous home assignment). Recycle before new material:
+- **Vocabulary**: pull 2 to 4 items from the class Vocabulary Log. Prioritize items from lessons that are neither the most recent nor already reviewed several times, so review rotates through everything taught.
+- **Grammar**: one quick retrieval task on a grammar point from an earlier lesson (a few prompts, a short error correction, or "tell your partner about X using the structure"), rotating through earlier points.
+- **Last home assignment**: a brief follow-up in pairs (read a sentence aloud, share one answer, fix one error), if one was given.
+- Keep it to a few minutes, as short pair speaking prompts rather than worksheets: a sentence with the word blanked out, or "use this word in a sentence about..." tied to the class's shared interests.
+- Skip this section only for the class's first-ever lesson with nothing imported.
+
+### Home Assignment
+
+Included by default. Class time is for speaking, so **writing tasks belong here**, not in the in-class activities. Choose 1 to 2 tasks from the "Home assignment ideas" list in `references/activity-bank.md`, tied to the lesson's theme, vocabulary, and grammar. Keep it doable in 15 to 20 minutes, address it to the students, and give a Support option (a frame or word bank) for lower levels. Note which task will be reviewed next lesson.
 
 ### Fresh Vocabulary
 
@@ -225,8 +238,8 @@ Keep it tight. Edge cases and register notes belong in a Teacher's Note, not in 
 ### Activities
 
 Include **2 to 3 activities**, not one fixed activity, so the teacher can choose, skip, or swap live:
-- **Random**: pick 2 to 3 from `references/teacher-activities.md` that fit the level, topic, time, and class size, varied enough not to repeat each other.
-- **Specific**: use the named activities. If the teacher named only one, add 1 to 2 more.
+- **Random**: pick 2 to 3 from `references/teacher-activities.md` that fit the level, topic, time, and class size. Filter first, then choose using the weight tags there (High = 3, Medium = 2, Low = 1). **Never reuse an activity from the class Activity Log within the last 4 lessons**, and avoid two activities of the same category (for example two debate-style activities) in one lesson.
+- **Specific**: use the named activities (the no-repeat rule does not apply to requested activities). If the teacher named only one, add 1 to 2 more.
 - **Teacher's judgment or unspecified**: start from `references/teacher-activities.md`, and fall back to `references/activity-bank.md` only if nothing there fits.
 
 **Every activity has**:
@@ -235,11 +248,13 @@ Include **2 to 3 activities**, not one fixed activity, so the teacher can choose
 
 **Generate almost all content yourself**: dialogues, stories, scenarios, discussion questions, data tables. At most **1 activity per lesson** may require the teacher to source real external material (a real photo, video or audio clip, or rarely a real article), and only when it is clearly the best fit. Describe a Picture needs a real photo, so it always counts. If used, list the photo in Materials needed and add a Teacher's Note suggesting what to look for.
 
-Present each option under its own heading (Activity A, Activity B, Activity C) with no wrapping stage heading, going straight from Grammar Focus into the first activity. No time on the headings. Do not write framing like "choose from these activities". It is fine for the activities' combined time to exceed the class length.
+Present each option under its own heading named after the activity itself (for example "Role Play: Ordering at a Cafe"), **never lettered or numbered** ("Activity A", "Activity 2"), because the teacher may reorder, skip, or swap them live with no wrapping stage heading, going straight from Grammar Focus into the first activity. No time on the headings. Do not write framing like "choose from these activities". It is fine for the activities' combined time to exceed the class length.
 
 Any list of items within an activity is a **bulleted list**. Numbered lists are for sequential steps only.
 
-Write every activity's instructions **addressed to the students, in the second person** ("Read the dialogue and discuss..."), not as stage directions to the teacher. Calibrate language to the median level. Personalize using the class's shared interests, goal, and place. For a mono-lingual class, pre-empt the likely L1 errors silently.
+Write every activity's instructions **addressed to the students, in the second person** ("Read the dialogue and discuss..."), not as stage directions to the teacher.
+
+**Hard rule: no student-facing text may mention the teacher, tutor, instructor, or "the students" in any form.** That includes "your teacher", "ask your teacher", "the teacher will...", and "the students". The teacher pastes this material into the lesson and is standing in the room, so "your teacher will read a story" is awkward and makes a lesson built for this class read like generic worksheet text. Rewrite so nobody is named: "you will hear a short story", "look at the photo". If a person must act, use "we" or an imperative ("Take turns reading", "Let's check the answers together"). Only Teacher's Notes, Materials needed, and the Time Summary may mention the teacher, and none of them appear in the handout. **Before delivering the plan or handout, scan the student-facing text for teacher, tutor, instructor, and student (case-insensitive) and rewrite every hit.** Calibrate language to the median level. Personalize using the class's shared interests, goal, and place. For a mono-lingual class, pre-empt the likely L1 errors silently.
 
 ### Wrap-up
 
@@ -262,7 +277,8 @@ After finalizing a lesson:
 - Set its path row Status to "Delivered <date>".
 - If the lesson's theme, grammar point, activities, or grouping ended up different from the path row, update the row to match what was written and tell the teacher, so later lessons avoid repeats.
 - When the teacher reports what the Quick Level Check showed, update the level headcount, median, distribution, and confidence.
-- **Before** drafting Fresh Vocabulary, read the Vocabulary Log. **After** finalizing the list, append the new items under a new dated heading.
+- **Before** drafting Fresh Vocabulary, read the Vocabulary Log. **After** finalizing the lesson, append the new items, the grammar point, and the home assignment under a new dated heading.
+- **Before** choosing activities, read the Activity Log to apply the no-repeat rule. **After** finalizing, append the chosen activities with the date.
 - If the teacher says the class already knows certain words, log those too.
 
 ## Step 5: Differentiation and common pitfalls
@@ -279,6 +295,8 @@ The full rules are in `references/differentiation.md`. In short:
 ## Output format
 
 Write the plan as clean markdown with a header per stage. No timing in headers. Do not pad with teaching theory the teacher already knows. Keep it concrete and usable at the front of a classroom.
+
+**Use the chosen English variety consistently, American by default.** Every word in every output (lesson text, dialogues, vocab words and definitions, example sentences, instructions, handouts, teacher's notes) follows American spelling and usage unless the teacher chose British in Step 1: color, favorite, organize, realize, center, traveling, program, gray, practice (noun and verb), plus American vocabulary (apartment, elevator, truck, vacation, soccer, cell phone) and American date and measurement conventions. If British was chosen, use it just as consistently. Never mix the two in one document. Run a quick scan for common British spellings (-our, -ise, -re, -ll- doubling) before delivering.
 
 **Never use an em dash in narrative or body text in anything this skill produces**: lesson plans, handouts, learning paths, teacher's notes, interview questions, record files, and chat responses. It reads as AI-generated writing. Use a period, comma, colon, or parentheses, or split into two sentences. The only acceptable use is as a separator in a heading or label, and vocab items use an en dash. When in doubt, do not use one.
 
@@ -305,12 +323,16 @@ python3 skills/english-classroom/scripts/md_to_docx.py <plan>.md <output>.docx
 
 That path is relative to the repo root. In an installed plugin the working directory is the teacher's own, so run `scripts/md_to_docx.py` from the folder this SKILL.md is in (Claude Code gives the skill's base directory when it loads).
 
-If `python-docx` is missing, run `pip install python-docx` and retry. The script handles `#`, `##`, `###` headings, bold and italic inline markup, lists, `> ` blockquote lines (rendered indented, gray, italic, used for Teacher's Notes), and markdown tables (real Word tables with a bold header row, used for the path). Write the source markdown accordingly:
+If `python-docx` is missing, run `pip install python-docx` and retry. The script handles `#`, `##`, `###` headings, bold and italic inline markup, lists, `> ` blockquote lines (rendered indented, black, italic, used for Teacher's Notes), and markdown tables (real Word tables with a bold header row, used for the path). Write the source markdown accordingly:
 - Lesson title as `#`, each stage as `##`.
 - Bold the vocab word in each `word – definition` line and italicize the example sentence.
 - Prefix each Teacher's Note line with `> `.
 - For a path, write the exact markdown table already used to present it.
 
 Name files `<class-slug>-lesson-<n>.docx`, `<class-slug>-lesson-<n>-handout.docx`, and `<class-slug>-learning-path.docx`. For a single lesson outside a path, use `<class-slug>-<lesson-name-slug>.docx`.
+
+**Always use the bundled converter for plans, handouts, and path tables, on every harness.** Do not use the `docx` skill, docx-js, or hand-built Word files: their default heading and title styles are blue.
+
+**Exports are black text only, with no exceptions.** No blue headings, no blue title or rule under the title, no colored text, no colored table shading, and no hyperlinks (Word renders them blue and underlined). The converter forces every style to black, turns `[label](url)` into plain label text, and checks the saved file, exiting with an error if any color or hyperlink remains. Never add color to the source markdown or post-process the file. If the converter reports non-black formatting, fix the cause and re-export. Do not call an export done until the converter has printed `Wrote <file>` without an error.
 
 **After creating any file, tell the teacher exactly where it landed**: the full path in a connected folder, or a plain statement that it is attached in the chat. This applies to every file this skill writes: exports, handouts, and record files.
