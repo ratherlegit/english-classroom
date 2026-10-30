@@ -1,4 +1,4 @@
-> **This project has moved.** english-tutoring and english-classroom now ship together as one plugin: [ratherlegit/english-teaching](https://github.com/ratherlegit/english-teaching). Install that instead to get both skills at once. This repository will no longer be updated.
+> **This project has moved.** english-tutoring, english-classroom, and english-worksheet now ship together as one plugin: [ratherlegit/english-teaching](https://github.com/ratherlegit/english-teaching). Install that instead to get all three skills at once. This repository is archived and will no longer be updated.
 
 # english-classroom
 
